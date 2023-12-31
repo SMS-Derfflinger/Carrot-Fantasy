@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="13" height="8" tilewidth="100" tileheight="100" infinite="0" nextlayerid="4" nextobjectid="61">
+ <tileset firstgid="1" source="Level 3.tsx"/>
+ <layer id="1" name="Background" width="13" height="8">
+  <data encoding="base64" compression="zlib">
+   eJwNwwVSAgEAAMCzEwMbRSQExO5Exe4ubFHQ/7/A3ZmtCoKg2hprrbPeBhttstkWWw3ZZrsddhq2y2577LXPfgeMOOiQUYeNOWLchElTjpo2Y9Yxc4474aRTTjvjrHPOu+CiSy674qprrrth3k233Lbgjrvuue+Bhx557ImnnnnuhZdeee2Nt95574OPPln02RdfffPdDz/9suS3P5at+Ouf/8ilFVU=
+  </data>
+ </layer>
+ <objectgroup id="2" name="Carrot">
+  <object id="1" x="1200" y="300" width="100" height="100"/>
+ </objectgroup>
+ <objectgroup id="3" name="TowerPosition">
+  <object id="3" x="0" y="100" width="100" height="100"/>
+  <object id="4" x="0" y="200" width="100" height="100"/>
+  <object id="5" x="0" y="300" width="100" height="100"/>
+  <object id="6" x="0" y="400" width="100" height="100"/>
+  <object id="7" x="0" y="500" width="100" height="100"/>
+  <object id="8" x="0" y="600" width="100" height="100"/>
+  <object id="12" x="1100" y="300" width="100" height="100"/>
+  <object id="13" x="1100" y="400" width="100" height="100"/>
+  <object id="14" x="1100" y="500" width="100" height="100"/>
+  <object id="15" x="1100" y="600" width="100" height="100"/>
+  <object id="16" x="1000" y="300" width="100" height="100"/>
+  <object id="17" x="1000" y="400" width="100" height="100"/>
+  <object id="18" x="1000" y="500" width="100" height="100"/>
+  <object id="19" x="1000" y="600" width="100" height="100"/>
+  <object id="20" x="900" y="300" width="100" height="100"/>
+  <object id="21" x="800" y="300" width="100" height="100"/>
+  <object id="22" x="700" y="300" width="100" height="100"/>
+  <object id="23" x="600" y="300" width="100" height="100"/>
+  <object id="24" x="500" y="300" width="100" height="100"/>
+  <object id="25" x="1100" y="200" width="100" height="100"/>
+  <object id="26" x="1000" y="200" width="100" height="100"/>
+  <object id="27" x="900" y="200" width="100" height="100"/>
+  <object id="28" x="800" y="200" width="100" height="100"/>
+  <object id="29" x="700" y="200" width="100" height="100"/>
+  <object id="30" x="600" y="200" width="100" height="100"/>
+  <object id="31" x="500" y="200" width="100" height="100"/>
+  <object id="32" x="400" y="200" width="100" height="100"/>
+  <object id="33" x="300" y="200" width="100" height="100"/>
+  <object id="34" x="200" y="200" width="100" height="100"/>
+  <object id="35" x="300" y="400" width="100" height="100"/>
+  <object id="36" x="200" y="400" width="100" height="100"/>
+  <object id="37" x="100" y="400" width="100" height="100"/>
+  <object id="38" x="100" y="700" width="100" height="100"/>
+  <object id="39" x="400" y="700" width="100" height="100"/>
+  <object id="40" x="300" y="700" width="100" height="100"/>
+  <object id="41" x="200" y="700" width="100" height="100"/>
+  <object id="42" x="500" y="500" width="100" height="100"/>
+  <object id="43" x="400" y="500" width="100" height="100"/>
+  <object id="44" x="900" y="400" width="100" height="100"/>
+  <object id="45" x="800" y="400" width="100" height="100"/>
+  <object id="46" x="700" y="400" width="100" height="100"/>
+  <object id="47" x="800" y="600" width="100" height="100"/>
+  <object id="48" x="700" y="600" width="100" height="100"/>
+  <object id="49" x="600" y="600" width="100" height="100"/>
+  <object id="50" x="200" y="600" width="100" height="100"/>
+  <object id="51" x="1100" y="100" width="100" height="100"/>
+  <object id="52" x="1000" y="100" width="100" height="100"/>
+  <object id="53" x="900" y="100" width="100" height="100"/>
+  <object id="54" x="800" y="100" width="100" height="100"/>
+  <object id="55" x="700" y="100" width="100" height="100"/>
+  <object id="56" x="600" y="100" width="100" height="100"/>
+  <object id="57" x="500" y="100" width="100" height="100"/>
+  <object id="58" x="400" y="100" width="100" height="100"/>
+  <object id="59" x="300" y="100" width="100" height="100"/>
+  <object id="60" x="200" y="100" width="100" height="100"/>
+ </objectgroup>
+</map>
