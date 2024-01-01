@@ -55,7 +55,7 @@ bool LevelScene::init()
     m_level2Button->setNormalImage(Sprite::create("suo2-1.png"));
     m_level3Button->setNormalImage(Sprite::create("suo3-1.png"));
     //设置初始金额
-    money = 100;
+    money = 0;
     // 显示 money 数量的 Label
     auto background1 = Sprite::create("qian.png"); // 使用指定的图片文件创建 Sprite 对象作为背景
     background1->setPosition(Vec2(100, 700)); // 设置钱包
