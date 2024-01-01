@@ -1,7 +1,7 @@
 #include "Target.h"
 #include "SceneBase.h"
 #include "Tower.h"
-
+#include "audio/include/SimpleAudioEngine.h"
 USING_NS_CC;
 
 
@@ -25,6 +25,7 @@ void Target::takeDamage(int damage) {
         {
             scene->updateMoney(value);
         }
+         
         // 播放死亡动画、移除目标
         this->runAction(Sequence::create(
             FadeOut::create(0.25f),// 淡出

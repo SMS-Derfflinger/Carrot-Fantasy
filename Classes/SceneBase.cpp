@@ -102,6 +102,18 @@ void SceneBase::takeCarrotDamage(int damage)
         carrotHP = 0;
         this->setButton(false);
     }
+
+    this->removeChild(m_carrotHP);
+    // 创建 Label，并设置字体、字号和初始文本内容
+    int number = carrotHP; // 要显示的数字
+    std::string text = std::to_string(number); // 将数字转换为字符串
+    m_carrotHP = Label::createWithTTF(text, "fonts/arial.ttf", 28);
+    m_carrotHP->setTextColor(Color4B::BLACK);
+    Vec2 tempPosition = carrotPosition;
+    tempPosition.x -= 20;
+    tempPosition.y += 90;
+    m_carrotHP->setPosition(tempPosition);
+    this->addChild(m_carrotHP, 1);
 }
 
 /*
@@ -119,6 +131,9 @@ void SceneBase::initScene(std::string& mapName)
     auto map = TMXTiledMap::create(mapName);
     this->addChild(map, 0);     // 添加到场景中，显示在第0层
 
+    setPauseButton();           //放置暂停按钮
+    setMenuButton();            
+
     // 获取萝卜对象层
     TMXObjectGroup* carrotObjects = map->getObjectGroup("Carrot");
 
@@ -134,6 +149,19 @@ void SceneBase::initScene(std::string& mapName)
     this->addChild(carrot, 1);      // 添加到场景中，显示在第1层，确保在地图上方显示
     this->carrotPosition = carrotPos;
     this->m_carrot = carrot;
+
+    Sprite* carrot_HP = Sprite::create("CarrotHP.png");
+    Vec2 carrotHPPosition = Vec2(xC, yC + 90);
+    carrot_HP->setPosition(carrotHPPosition);
+    this->addChild(carrot_HP, 1);
+
+    // 创建 Label，并设置字体、字号和初始文本内容
+    int number = carrotHP; // 要显示的数字
+    std::string text = std::to_string(number); // 将数字转换为字符串
+    m_carrotHP = Label::createWithTTF(text, "fonts/arial.ttf", 28);
+    m_carrotHP->setTextColor(Color4B::BLACK);
+    m_carrotHP->setPosition(Vec2(xC - 20, yC + 90));
+    this->addChild(m_carrotHP, 1);
 
     TMXObjectGroup* towerPositions = map->getObjectGroup("TowerPosition");
     // 处理位置对象
@@ -162,166 +190,26 @@ void SceneBase::initScene(std::string& mapName)
         for (Node* child : children)
         {
             TowerPosition* towerPos = dynamic_cast<TowerPosition*>(child);
+
+            // 移除所有的升级按钮
+            if (towerPos && towerPos->towerofThisPosition)
+            {
+                towerPos->towerofThisPosition->removeChildByName("But");
+                towerPos->towerofThisPosition->removeChildByName("But");
+                if (towerPos->towerofThisPosition->bottom) {
+                    towerPos->towerofThisPosition->bottom->removeAllChildren();
+                }
+            }
             // 被点击的方块
             if (towerPos && towerPos->getBoundingBox().containsPoint(touch->getLocation()))
             {
                 // 当前位置有塔
                 if (towerPos->towerofThisPosition)
                 {
-                   // towerPos->setVisible(false);
+                    towerPos->setVisible(false);
 
-                    // 创建按钮
-                    Vec2 positionUp = Vec2(40, 120);
-                    Vec2 positionDelete = Vec2(40, -40);
+                    towerPos->towerofThisPosition->clicked(moneyScene);
 
-                    if (dynamic_cast<BottleTower_1*>(towerPos->towerofThisPosition)) {
-                        // 升级按钮
-                        auto towerUp = cocos2d::ui::Button::create("BottleUpgrade1.png", "BottleUpgrade1.png", "BottleUpgradeUn1.png");
-                        towerUp->setPosition(positionUp);
-                        //towerUp->addClickEventListener(CC_CALLBACK_1(SceneBase::updateBottle1, this));  // 添加按钮点击回调函数
-                        towerPos->addChild(towerUp, 10, "BottleButton");
-                        // 设置点击状态
-                        if (this->moneyScene >= 150)
-                        {
-                            towerUp->setEnabled(true);
-                        }
-                        else
-                        {
-                            towerUp->setEnabled(false);
-                        }
-                        // 删除按钮
-                        auto towerDelete = cocos2d::ui::Button::create("BottleRemove1.png", "BottleRemove1.png");
-                        towerDelete->setPosition(positionDelete);
-                        towerDelete->addClickEventListener(CC_CALLBACK_1(SceneBase::createBottle, this));  // 添加按钮点击回调函数
-                        towerPos->addChild(towerDelete, 0, "BottleButton");
-                    }
-                    else if (dynamic_cast<BottleTower_2*>(towerPos->towerofThisPosition)) {
-                        // 升级按钮
-                        auto towerUp = cocos2d::ui::Button::create("BottleUpgrade2.png", "BottleUpgrade2.png", "BottleUpgradeUn2.png");
-                        towerUp->setPosition(positionUp);
-                        towerUp->addClickEventListener(CC_CALLBACK_1(SceneBase::createBottle, this));  // 添加按钮点击回调函数
-                        towerPos->addChild(towerUp, 0, "BottleButton");
-                        // 设置点击状态
-                        if (this->moneyScene >= 250)
-                        {
-                            towerUp->setEnabled(true);
-                        }
-                        else
-                        {
-                            towerUp->setEnabled(false);
-                        }
-                        // 删除按钮
-                        auto towerDelete = cocos2d::ui::Button::create("BottleRemove2.png", "BottleRemove2.png");
-                        towerDelete->setPosition(positionDelete);
-                        towerDelete->addClickEventListener(CC_CALLBACK_1(SceneBase::createBottle, this));  // 添加按钮点击回调函数
-                        towerPos->addChild(towerDelete, 0, "BottleButton");
-                    }
-                    else if (dynamic_cast<BottleTower_3*>(towerPos->towerofThisPosition)) {
-                        // 删除按钮
-                        auto towerDelete = cocos2d::ui::Button::create("BottleRemove3.png", "BottleRemove3.png");
-                        towerDelete->setPosition(positionDelete);
-                        towerDelete->addClickEventListener(CC_CALLBACK_1(SceneBase::createBottle, this));  // 添加按钮点击回调函数
-                        towerPos->addChild(towerDelete, 0, "BottleButton");
-                    }
-                    else if (dynamic_cast<StarTower_1*>(towerPos->towerofThisPosition)) {
-                        // 升级按钮
-                        auto towerUp = cocos2d::ui::Button::create("StarUpgrade1.png", "StarUpgrade1.png", "StarUpgradeUn1.png");
-                        towerUp->setPosition(positionUp);
-                        towerUp->addClickEventListener(CC_CALLBACK_1(SceneBase::createBottle, this));  // 添加按钮点击回调函数
-                        towerPos->addChild(towerUp, 0, "BottleButton");
-                        // 设置点击状态
-                        if (this->moneyScene >= 150)
-                        {
-                            towerUp->setEnabled(true);
-                        }
-                        else
-                        {
-                            towerUp->setEnabled(false);
-                        }
-                        // 删除按钮
-                        auto towerDelete = cocos2d::ui::Button::create("BottleRemove1.png", "BottleRemove1.png");
-                        towerDelete->setPosition(positionDelete);
-                        towerDelete->addClickEventListener(CC_CALLBACK_1(SceneBase::createBottle, this));  // 添加按钮点击回调函数
-                        towerPos->addChild(towerDelete, 0, "BottleButton");
-                    }
-                    else if (dynamic_cast<StarTower_2*>(towerPos->towerofThisPosition)) {
-                        // 升级按钮
-                        auto towerUp = cocos2d::ui::Button::create("StarUpgrade2.png", "StarUpgrade2.png", "StarUpgradeUn2.png");
-                        towerUp->setPosition(positionUp);
-                        towerUp->addClickEventListener(CC_CALLBACK_1(SceneBase::createBottle, this));  // 添加按钮点击回调函数
-                        towerPos->addChild(towerUp, 0, "BottleButton");
-                        // 设置点击状态
-                        if (this->moneyScene >= 150)
-                        {
-                            towerUp->setEnabled(true);
-                        }
-                        else
-                        {
-                            towerUp->setEnabled(false);
-                        }
-                        // 删除按钮
-                        auto towerDelete = cocos2d::ui::Button::create("BottleRemove3.png", "BottleRemove3.png");
-                        towerDelete->setPosition(positionDelete);
-                        towerDelete->addClickEventListener(CC_CALLBACK_1(SceneBase::createBottle, this));  // 添加按钮点击回调函数
-                        towerPos->addChild(towerDelete, 0, "BottleButton");
-                    }
-                    else if (dynamic_cast<StarTower_3*>(towerPos->towerofThisPosition)) {
-                        // 删除按钮
-                        auto towerDelete = cocos2d::ui::Button::create("StarRemove3.png", "StarRemove3.png");
-                        towerDelete->setPosition(positionDelete);
-                        towerDelete->addClickEventListener(CC_CALLBACK_1(SceneBase::createBottle, this));  // 添加按钮点击回调函数
-                        towerPos->addChild(towerDelete, 0, "BottleButton");
-                    }
-                    else if (dynamic_cast<SunflowerTower_1*>(towerPos->towerofThisPosition)) {
-                        // 升级按钮
-                        auto towerUp = cocos2d::ui::Button::create("StarUpgrade1.png", "StarUpgrade1.png", "BottleUpgradeUn3.png");
-                        towerUp->setPosition(positionUp);
-                        towerUp->addClickEventListener(CC_CALLBACK_1(SceneBase::createBottle, this));  // 添加按钮点击回调函数
-                        towerPos->addChild(towerUp, 0, "BottleButton");
-                        // 设置点击状态
-                        if (this->moneyScene >= 150)
-                        {
-                            towerUp->setEnabled(true);
-                        }
-                        else
-                        {
-                            towerUp->setEnabled(false);
-                        }
-                        // 删除按钮
-                        auto towerDelete = cocos2d::ui::Button::create("BottleRemove1.png", "BottleRemove1.png");
-                        towerDelete->setPosition(positionDelete);
-                        towerDelete->addClickEventListener(CC_CALLBACK_1(SceneBase::createBottle, this));  // 添加按钮点击回调函数
-                        towerPos->addChild(towerDelete, 0, "BottleButton");
-                    }
-                    else if (dynamic_cast<SunflowerTower_2*>(towerPos->towerofThisPosition)) {
-                        // 升级按钮
-                        auto towerUp = cocos2d::ui::Button::create("StarUpgrade2.png", "StarUpgrade2.png", "StarUpgradeUn2.png");
-                        towerUp->setPosition(positionUp);
-                        towerUp->addClickEventListener(CC_CALLBACK_1(SceneBase::createBottle, this));  // 添加按钮点击回调函数
-                        towerPos->addChild(towerUp, 0, "BottleButton");
-                        // 设置点击状态
-                        if (this->moneyScene >= 150)
-                        {
-                            towerUp->setEnabled(true);
-                        }
-                        else
-                        {
-                            towerUp->setEnabled(false);
-                        }
-                        // 删除按钮
-                        auto towerDelete = cocos2d::ui::Button::create("BottleRemove3.png", "BottleRemove3.png");
-                        towerDelete->setPosition(positionDelete);
-                        towerDelete->addClickEventListener(CC_CALLBACK_1(SceneBase::createBottle, this));  // 添加按钮点击回调函数
-                        towerPos->addChild(towerDelete, 0, "BottleButton");
-                    }
-                    else if (dynamic_cast<SunflowerTower_3*>(towerPos->towerofThisPosition)) {
-                        // 删除按钮
-                        auto towerDelete = cocos2d::ui::Button::create("StarRemove1.png", "StarRemove1.png");
-                        towerDelete->setPosition(positionDelete);
-                        towerDelete->addClickEventListener(CC_CALLBACK_1(SceneBase::createBottle, this));  // 添加按钮点击回调函数
-                        towerPos->addChild(towerDelete, 0, "BottleButton");
-                    }
-                    
                 }
                 // 没有塔，显示建造界面
                 else {
@@ -349,9 +237,7 @@ void SceneBase::initScene(std::string& mapName)
                         buttonBottle->setEnabled(false);
                     }
 
-                    towerPos->setVisible(true);
-                    // 创建按钮
-                    
+                    // 创建按钮                  
                     auto buttonStar = cocos2d::ui::Button::create("StarButton.png", "StarButton.png", "StarButtonUn.png");
                     buttonStar->setPosition(positionButtonStar);
                     buttonStar->addClickEventListener(CC_CALLBACK_1(SceneBase::createStar, this));  // 添加按钮点击回调函数
@@ -364,9 +250,7 @@ void SceneBase::initScene(std::string& mapName)
                         buttonStar->setEnabled(false);
                     }
 
-                    towerPos->setVisible(true);
-                    // 创建按钮
-                    
+                    // 创建按钮                 
                     auto buttonSunflower = cocos2d::ui::Button::create("SunflowerButton.png", "SunflowerButton.png", "SunflowerButtonUn.png");
                     buttonSunflower->setPosition(positionButtonSunflower);
                     buttonSunflower->addClickEventListener(CC_CALLBACK_1(SceneBase::createSunflower, this));  // 添加按钮点击回调函数
@@ -384,7 +268,7 @@ void SceneBase::initScene(std::string& mapName)
             else if (towerPos)
             {
                 towerPos->setVisible(false);
-                
+
                 // 查找和移除所有的建造按钮
                 cocos2d::ui::Button* spriteBottle = static_cast<cocos2d::ui::Button*>(this->getChildByName("BottleButton"));
                 if (spriteBottle) {
@@ -434,17 +318,19 @@ void SceneBase::createBottle(cocos2d::Ref* sender)
         if (moneyScene >= tower->getConsumption())
         {
             auto bottom = Sprite::create("Bottom.png");
-            bottom->setPosition(button->getParent()->getPosition());
+            bottom->setPosition(button->getParent()->getPosition());// 设置底座位置
             tower->setPosition(button->getParent()->getPosition());  // 设置炮塔位置
             auto thisTowerPosition = dynamic_cast<TowerPosition*> (button->getParent());
             if (thisTowerPosition)
             {
-                thisTowerPosition->towerofThisPosition = tower;
+                thisTowerPosition->towerofThisPosition = tower;//
+                tower->thisTowerPositionIS = thisTowerPosition;//
+
             }
-            this->addChild(bottom, 1);
+            this->addChild(bottom, 1, "BottleBottom");
             this->addChild(tower, 2);  // 将炮塔添加到场景中
             button->getParent()->setVisible(false);
-
+            tower->bottom = bottom;//
             this->updateMoney(-100);
         }
     }
@@ -466,6 +352,7 @@ void SceneBase::createStar(cocos2d::Ref* sender)
             if (thisTowerPosition)
             {
                 thisTowerPosition->towerofThisPosition = tower;
+                tower->thisTowerPositionIS = thisTowerPosition;
             }
             //this->addChild(bottom, 1);
             this->addChild(tower, 2);  // 将炮塔添加到场景中
@@ -492,11 +379,12 @@ void SceneBase::createSunflower(cocos2d::Ref* sender)
             if (thisTowerPosition)
             {
                 thisTowerPosition->towerofThisPosition = tower;
+                tower->thisTowerPositionIS = thisTowerPosition;
             }
             this->addChild(bottom, 1);
             this->addChild(tower, 2);  // 将炮塔添加到场景中
             button->getParent()->setVisible(false);
-
+            tower->bottom = bottom;
             this->updateMoney(-200);
         }
     }
@@ -510,6 +398,7 @@ bool SceneBase::init(int level, LevelScene* levelScene)
     {
         return false;
     }
+    
 
     m_levelScene = levelScene;
     // 创建定时器，定时更新怪物状态
@@ -552,11 +441,110 @@ void SceneBase::setButton(bool flag)
     }
 }
 
+void SceneBase::setPauseButton()
+{
+    // 创建按钮                 
+    auto pauseGame = cocos2d::ui::Button::create("Pause.png", "Pause.png");
+    pauseGame->setPosition(Vec2(1000, 750));    // 设置按钮位置
+    pauseGame->addClickEventListener(CC_CALLBACK_0(SceneBase::pauseOperate, this));
+    this->addChild(pauseGame, 6, "Pause");
+
+    auto continueGame = cocos2d::ui::Button::create("Pause.png", "Pause.png");
+    continueGame->setPosition(Vec2(1000, 750));    // 设置按钮位置
+    continueGame->addClickEventListener(CC_CALLBACK_0(SceneBase::continueOperate, this));
+    continueGame->setVisible(false);
+    this->addChild(continueGame, 7, "Continue");
+
+    //Director::getInstance()->pause();           // 暂停游戏
+}
+
+void SceneBase::pauseOperate()
+{
+    auto Continue = dynamic_cast<cocos2d::ui::Button*>(this->getChildByName("Continue"));
+    Continue->setVisible(true);
+    Director::getInstance()->pause();           // 暂停游戏
+}
+
+void SceneBase::continueOperate()
+{
+    Director::getInstance()->resume();          // 恢复游戏
+    auto Continue = dynamic_cast<cocos2d::ui::Button*>(this->getChildByName("Continue"));
+    Continue->setVisible(false);
+}
+
+void SceneBase::setMenuButton()
+{
+    // 创建按钮
+    auto menuButton = cocos2d::ui::Button::create("Menu.png", "Menu.png");
+    menuButton->setPosition(Vec2(1100, 750));    // 设置按钮位置
+    menuButton->addClickEventListener(CC_CALLBACK_0(SceneBase::onGameMenu, this));
+    this->addChild(menuButton, 6, "Menu");
+
+    auto GameMenu = Sprite::create("GameMenu.png");
+    GameMenu->setPosition(Vec2(650, 400));
+    this->addChild(GameMenu, 5, "GameMenu");
+
+    auto continueGame = cocos2d::ui::Button::create("ContinueGame.png", "ContinueGame.png");
+    continueGame->setPosition(Vec2(650, 365));    // 设置按钮位置
+    continueGame->addClickEventListener(CC_CALLBACK_0(SceneBase::continueGame, this));
+    this->addChild(continueGame, 6, "ContinueGame");
+
+    auto goBack = cocos2d::ui::Button::create("GoBack.png", "GoBack.png");
+    goBack->setPosition(Vec2(650, 265));    // 设置按钮位置
+    goBack->addClickEventListener(CC_CALLBACK_0(SceneBase::goBack, this));
+    this->addChild(goBack, 6, "GoBack");
+
+    GameMenu->setVisible(false);
+    continueGame->setVisible(false);
+    goBack->setVisible(false);
+}
+
+void SceneBase::onGameMenu()
+{
+    auto GameMenu = dynamic_cast<cocos2d::Sprite*>(this->getChildByName("GameMenu"));
+    auto continueGame = dynamic_cast<cocos2d::ui::Button*>(this->getChildByName("ContinueGame"));
+    auto menuGoBack = dynamic_cast<cocos2d::ui::Button*>(this->getChildByName("GoBack"));
+    GameMenu->setVisible(true);
+    continueGame->setVisible(true);
+    menuGoBack->setVisible(true);
+    Director::getInstance()->pause();             // 暂停游戏
+}
+
+void SceneBase::continueGame()
+{
+    Director::getInstance()->resume();            // 恢复游戏
+    auto GameMenu = dynamic_cast<cocos2d::Sprite*>(this->getChildByName("GameMenu"));
+    auto continueGame = dynamic_cast<cocos2d::ui::Button*>(this->getChildByName("ContinueGame"));
+    auto menuGoBack = dynamic_cast<cocos2d::ui::Button*>(this->getChildByName("GoBack"));
+    GameMenu->setVisible(false);
+    continueGame->setVisible(false);
+    menuGoBack->setVisible(false);
+}
+
+void SceneBase::goBack()
+{
+    // 游戏完成时调用此函数
+    if (m_levelScene)
+    {
+        //停下音乐
+        CocosDenshion::SimpleAudioEngine::getInstance()->stopBackgroundMusic();
+        CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("main.mp3");
+        CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("main.mp3", true);
+        Director::getInstance()->resume();          // 恢复游戏
+        Director::getInstance()->popScene();        // 返回到上一个场景
+    }
+}
+
 void SceneBase::onGameWin()
 {
     // 游戏完成时调用此函数
     if (m_levelScene)
     {
+        //停下音乐
+        CocosDenshion::SimpleAudioEngine::getInstance()->stopBackgroundMusic();
+
+        CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("main.mp3");
+        CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("main.mp3", true);
         //Director::getInstance()->resume();          // 恢复游戏
         int nextLevel = m_level + 1;
         m_levelScene->money += 100;
@@ -570,6 +558,10 @@ void SceneBase::onGameFail()
     // 游戏完成时调用此函数
     if (m_levelScene)
     {
+        //停下音乐
+        CocosDenshion::SimpleAudioEngine::getInstance()->stopBackgroundMusic();
+        CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("main.mp3");
+        CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("main.mp3", true);
         Director::getInstance()->resume();          // 恢复游戏
         Director::getInstance()->popScene();        // 返回到上一个场景
     }
@@ -589,31 +581,4 @@ void SceneBase::updateMoney(int money)
     lable->setPosition(Vec2(260, 763));
     this->m_lable = lable;
     this->addChild(m_lable, 1);
-}
-
-void SceneBase::updateBottle1(cocos2d::Ref* sender)
-{
-    // 在当前位置创建炮塔
-    auto button = dynamic_cast<cocos2d::ui::Button*>(sender);
-    if (button)
-    {
-        auto tower = BottleTower_2::create();  // 创建炮塔对象
-        if (moneyScene >= tower->getConsumption())
-        {
-            button->getParent()->removeAllChildren();
-            auto bottom = Sprite::create("Bottom.png");
-            bottom->setPosition(button->getParent()->getPosition());
-            tower->setPosition(button->getParent()->getPosition());  // 设置炮塔位置
-            auto thisTowerPosition = dynamic_cast<TowerPosition*> (button->getParent());
-            if (thisTowerPosition)
-            {
-                thisTowerPosition->towerofThisPosition = tower;
-            }
-            this->addChild(bottom, 1);
-            this->addChild(tower, 2);  // 将炮塔添加到场景中
-            button->getParent()->setVisible(false);
-
-            this->updateMoney(-150);
-        }
-    }
 }

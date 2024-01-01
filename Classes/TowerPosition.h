@@ -1,5 +1,5 @@
-#ifndef __YOUR_GAME_SCENE_H__
-#define __YOUR_GAME_SCENE_H__
+#ifndef __TOWERBASE__
+#define __TOWERBASE__
 
 #include "tower.h"
 #include "cocos2d.h"
@@ -13,7 +13,8 @@ public:
     virtual ~TowerPosition() {};
     // ³õÊ¼»¯º¯Êý
     virtual bool init() override;
-    Tower* towerofThisPosition;
+
+    Tower* towerofThisPosition = nullptr;
 };
 
-#endif // __YOUR_GAME_SCENE_H__
+#endif // __TOWERBASE__

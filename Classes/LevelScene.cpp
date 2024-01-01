@@ -55,7 +55,7 @@ bool LevelScene::init()
     m_level2Button->setNormalImage(Sprite::create("suo2-1.png"));
     m_level3Button->setNormalImage(Sprite::create("suo3-1.png"));
     //设置初始金额
-    money = 0;
+    money = 100;
     // 显示 money 数量的 Label
     auto background1 = Sprite::create("qian.png"); // 使用指定的图片文件创建 Sprite 对象作为背景
     background1->setPosition(Vec2(100, 700)); // 设置钱包
@@ -192,18 +192,17 @@ void LevelScene::enterUpgradeScene(Ref* sender)
 {
     auto upgradeScene = UpScene::create(this);
     Director::getInstance()->pushScene(upgradeScene);
-
 }
 //获取技能等级与返回
 void LevelScene::upgradeItem1() {
     skill1 += 1;
 }
-void LevelScene::upgradeItem2() {
-    skill2 += 1;
-}
+//void LevelScene::upgradeItem2() {
+//    skill2 += 1;
+//}
 int LevelScene::getItem1Level() {
     return skill1;
 }
-int LevelScene::getItem2Level() {
-    return skill2;
-}
+//int LevelScene::getItem2Level() {
+//    return skill2;
+//}

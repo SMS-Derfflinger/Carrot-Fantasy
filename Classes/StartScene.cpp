@@ -1,5 +1,7 @@
 #include "StartScene.h"
 #include "LevelScene.h"
+#include "audio/include/SimpleAudioEngine.h"
+
 USING_NS_CC;
 
 StartScene* StartScene::create()
@@ -32,6 +34,9 @@ bool StartScene::init()
     // ¿ªÊ¼°´Å¥
     auto startButton = MenuItemImage::create("button_normal.png", "button_selected.png", CC_CALLBACK_1(StartScene::startGame, this));
     startButton->setPosition(Vec2(650, 500));
+
+    CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("main.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("main.mp3", true);
 
     auto menu = Menu::create(startButton, nullptr);
     menu->setPosition(Vec2::ZERO);

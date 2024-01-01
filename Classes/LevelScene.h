@@ -27,11 +27,11 @@ public:
     int getMoney();//返回钱
     void enterUpgradeScene(cocos2d::Ref* sender);
     int skill1 = 0;//技能等级
-    int skill2 = 0;
+    //int skill2 = 0;
     void upgradeItem1();//获取技能等级与返回
-    void upgradeItem2();
+    //void upgradeItem2();
     int getItem1Level();
-    int getItem2Level();
+    //int getItem2Level();
 private:
     
     cocos2d::Scene* m_gameScene; // 保存 GameScene 场景的指针

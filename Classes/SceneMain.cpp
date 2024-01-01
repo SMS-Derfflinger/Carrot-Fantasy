@@ -6,6 +6,7 @@
 #include "Carrot.h"
 #include "TowerPosition.h"
 #include "ui/CocosGUI.h"
+#include "audio/include/SimpleAudioEngine.h"
 
 USING_NS_CC; //using namespace cocos2d
 
@@ -67,7 +68,10 @@ bool Scene1::init(int level, LevelScene* levelScene)
         return false;
     }
 
-    moneyScene = 500;
+    CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("level-1.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("level-1.mp3", true);
+
+    moneyScene = 500 + 100 * (levelScene->skill1);
     m_level = level;
     m_levelScene = levelScene; // 保存关卡选择场景的指针
 
@@ -171,7 +175,10 @@ bool Scene2::init(int level, LevelScene* levelScene)
         return false;
     }
 
-    moneyScene = 700;
+    CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("level-2.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("level-2.mp3", true);
+
+    moneyScene = 700 + 100 * (levelScene->skill1);
     m_level = level;
     m_levelScene = levelScene; // 保存关卡选择场景的指针
 
@@ -307,12 +314,22 @@ bool Scene3::init(int level, LevelScene* levelScene)
         return false;
     }
 
-    moneyScene = 1000;
+    CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("level-3.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("level-3.mp3", true);
+
+    moneyScene = 1000 + 100 * (levelScene->skill1);
     m_level = level;
     m_levelScene = levelScene; // 保存关卡选择场景的指针
 
     std::string mapName = "Level 3.tmx";
     initScene(mapName);
+
+    // 创建 Label，并设置字体、字号和初始文本内容
+    int number = moneyScene; // 要显示的数字
+    std::string text = std::to_string(number); // 将数字转换为字符串
+    m_lable = Label::createWithTTF(text, "fonts/arial.ttf", 48);
+    m_lable->setPosition(Vec2(260, 763));
+    this->addChild(m_lable, 1);
 
     path = {
     cocos2d::Vec2(100 + 50, 400 + 75),

@@ -168,19 +168,22 @@ void BottleTower::playAttackAnimation() {
 }
 
 void BottleTower::attackTarget() {
+
     // 获取目标位置
     Target* thisTarget = this->target;
-    cocos2d::Vec2 targetPosition = thisTarget->getPosition();
+   
     // 获取炮塔当前位置
     cocos2d::Vec2 towerPosition = getPosition();
+    int Damage = getDamage();
     // 创建炮弹精灵
     auto bullet = Sprite::create(Bullet);
     bullet->setPosition(towerPosition);
-    this->getParent()->addChild(bullet,2);
+    this->getParent()->addChild(bullet, 2);
     bullet->setVisible(false);
 
     // 子弹动作
     auto bulletAction = CallFunc::create([=]() {
+        cocos2d::Vec2 targetPosition = thisTarget->getPosition();
         // 创建子弹旋转动作
         // 计算目标方向向量
         cocos2d::Vec2 direction = this->target->getPosition() - towerPosition;
@@ -203,8 +206,8 @@ void BottleTower::attackTarget() {
                     if (thisTarget && thisTarget->isAlive()) {
                         // 在目标位置创建爆炸效果
                         auto explosion = Sprite::create(Explosion);
-                        explosion->setPosition(thisTarget->getPosition());
-                        this->getParent()->addChild(explosion);
+                        explosion->setPosition(targetPosition);
+                        thisTarget->getParent()->addChild(explosion);
                         explosion->runAction(Sequence::create(
                             DelayTime::create(0.1f),
                             FadeOut::create(0.1f),// 淡出
@@ -212,7 +215,7 @@ void BottleTower::attackTarget() {
                             nullptr
                         ));
                         // 产生伤害
-                        thisTarget->takeDamage(getDamage());
+                        thisTarget->takeDamage(Damage);
                     }
                     // 移除炮弹精灵
                     this->getParent()->removeChild(bullet, true);
@@ -433,6 +436,7 @@ void StarTower::attackTarget() {
     cocos2d::Vec2 targetPosition = thisTarget->getPosition();
     // 获取炮塔当前位置和方向
     cocos2d::Vec2 towerPosition = getPosition();
+    int Damage = getDamage();
     // 创建炮弹精灵
     auto bullet = Sprite::create(Bullet);
     bullet->setPosition(towerPosition);
@@ -464,7 +468,7 @@ void StarTower::attackTarget() {
                             nullptr
                         ));
                         // 对目标产生伤害
-                        thisTarget->takeDamage(getDamage() * 0.5);
+                        thisTarget->takeDamage(Damage * 0.5);
                         // 溅射伤害
                         Vector<Node*> enemies = getScene()->getChildren();
                         for (auto node : enemies) {
@@ -472,7 +476,7 @@ void StarTower::attackTarget() {
                             if (enemy && enemy->isAlive()) {
                                 float distance = getPosition().distance(enemy->getPosition());
                                 if (distance + enemy->getRadius() <= bulletRange) {
-                                    enemy->takeDamage(getDamage() * 0.5);
+                                    enemy->takeDamage(Damage * 0.5);
                                 }
                             }
                         }

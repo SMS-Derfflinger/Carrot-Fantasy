@@ -23,6 +23,20 @@ public:
 
     void setButton(bool flag);   // 游戏完成时调用的放置按钮函数，为true获胜，为false失败
 
+    void setPauseButton();       //放置暂停按钮
+
+    void pauseOperate();         //暂停操作
+
+    void continueOperate();      //继续游戏
+
+    void setMenuButton();        //放置菜单按钮
+
+    void onGameMenu();           //菜单界面
+
+    void continueGame();         //继续游戏
+
+    void goBack();               //返回
+
     cocos2d::Vec2 getCarrotPosition() const;
 
     void setCarrotPosition(cocos2d::Vec2 position);
@@ -48,30 +62,13 @@ public:
 
     void updateMoney(int money);
 
-    void updateBottle1(cocos2d::Ref* sender);
-
-    /*void updateBottle2(cocos2d::Ref* sender);
-
-    void removeBottle(cocos2d::Ref* sender);
-
-    void updateStar1(cocos2d::Ref* sender);
-
-    void updateStar2(cocos2d::Ref* sender);
-
-    void removeStar(cocos2d::Ref* sender);
-
-    void updateSunflower1(cocos2d::Ref* sender);
-
-    void updateSunflower1(cocos2d::Ref* sender);
-
-    void removeSunflower(cocos2d::Ref* sender);*/
-
+    int moneyScene;                     //场景中的的钱
 protected:
     cocos2d::Label* m_lable;            //显示当前金钱
     bool monsterFlag = false;           //怪物是否生成完毕的标志，true为生成完毕
     float time = 0.0f;                  //游戏的持续时间
     Sprite* m_carrot;                   //指向萝卜的指针
-    int moneyScene;                     //场景中的的钱
+    cocos2d::Label* m_carrotHP;         //显示萝卜的血量
     int carrotHP = 10;                  //萝卜的初始血量
     cocos2d::Vec2 carrotPosition;       //萝卜的位置
     std::vector<cocos2d::Vec2> path;    //移动路径

@@ -3,7 +3,11 @@
 
 #include "Target.h"
 #include "MonsterBase.h"
+#include "SceneMain.h"
+
 USING_NS_CC;
+
+class TowerPosition;
 
 class Tower : public cocos2d::Sprite {
 public:
@@ -35,6 +39,14 @@ public:
     // 执行攻击逻辑
     virtual void attack() = 0;
 
+    // 点击逻辑
+    virtual void clicked(int &sceneMoney) = 0;
+
+    Sprite* bottom = nullptr;
+    TowerPosition* thisTowerPositionIS =nullptr;
+
+
+
 protected:
     // 建造花费
     int consumption;
@@ -57,7 +69,7 @@ class BottleTower : public Tower {
 public:
     // 初始化函数
     virtual bool init() override;
-    CREATE_FUNC(BottleTower);
+  //  CREATE_FUNC(BottleTower);
     // 在主循环运行的更新函数
     void update(float delta);
 
@@ -81,7 +93,7 @@ class SunflowerTower : public Tower {
 public:
     // 初始化函数
     virtual bool init() override;
-    CREATE_FUNC(SunflowerTower);
+  //  CREATE_FUNC(SunflowerTower);
     // 在主循环运行的更新函数
     void update(float delta);
 
@@ -103,7 +115,7 @@ class StarTower : public Tower {
 public:
     // 初始化函数
     virtual bool init() override;
-    CREATE_FUNC(StarTower);
+   // CREATE_FUNC(StarTower);
     // 在主循环运行的更新函数
     void update(float delta);
 
